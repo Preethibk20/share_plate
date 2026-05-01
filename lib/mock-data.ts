@@ -1,0 +1,207 @@
+import type {
+  DonationHistoryItem,
+  Listing,
+  NotificationItem,
+  PickupAssignment,
+  ReportItem,
+  Reservation,
+  SessionUser,
+  UserProfile,
+} from '@/types'
+
+export const mockUser: UserProfile = {
+  id: 'user_1',
+  name: 'Aarav Sharma',
+  email: 'aarav@shareplate.org',
+  role: 'donor',
+  phone: '+91 98765 43210',
+  organization: 'Neighborhood Bakery',
+  address: 'Bandra West, Mumbai',
+  rating: 4.8,
+  ratingCount: 124,
+  donationHistory: [
+    { id: 'dh_1', title: 'Bread and pastries', date: '2026-04-29', quantity: 120, status: 'Completed' },
+    { id: 'dh_2', title: 'Festival meals', date: '2026-04-24', quantity: 80, status: 'Reserved' },
+    { id: 'dh_3', title: 'Packed lunches', date: '2026-04-18', quantity: 64, status: 'Completed' },
+  ] satisfies DonationHistoryItem[],
+}
+
+export const mockSessionUsers: Record<SessionUser['role'], SessionUser> = {
+  donor: mockUser,
+  receiver: {
+    id: 'user_2',
+    name: 'Sana Khan',
+    email: 'sana@carehive.ngo',
+    role: 'receiver',
+    avatar: 'SK',
+    rating: 4.9,
+  },
+  transporter: {
+    id: 'user_3',
+    name: 'Dev Mehta',
+    email: 'dev@routeflow.delivery',
+    role: 'transporter',
+    avatar: 'DM',
+    rating: 4.7,
+  },
+  admin: {
+    id: 'user_4',
+    name: 'Priya Nair',
+    email: 'priya@shareplate.org',
+    role: 'admin',
+    avatar: 'PN',
+    rating: 5,
+  },
+}
+
+export const mockListings: Listing[] = [
+  {
+    id: 'list_101',
+    foodType: 'Veg biryani packs',
+    quantity: 48,
+    unit: 'meals',
+    distanceKm: 1.4,
+    expiryAt: '2026-05-01T20:00:00.000Z',
+    createdAt: '2026-05-01T17:30:00.000Z',
+    status: 'Available',
+    image: 'https://images.unsplash.com/photo-1625944230945-1b7a46f7f90d?auto=format&fit=crop&w=900&q=80',
+    pickupAddress: 'Phoenix Marketcity, Mumbai',
+    expiryNote: 'Keep chilled, pickup within 2 hours.',
+    donor: { name: 'Urban Bowl', role: 'Donor', location: 'Kurla', rating: 4.8 },
+    coordinates: { lat: 19.075983, lng: 72.877655 },
+  },
+  {
+    id: 'list_102',
+    foodType: 'Packed sandwiches',
+    quantity: 36,
+    unit: 'packs',
+    distanceKm: 2.7,
+    expiryAt: '2026-05-01T19:15:00.000Z',
+    createdAt: '2026-05-01T16:40:00.000Z',
+    status: 'Reserved',
+    image: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=80',
+    pickupAddress: 'Andheri East, Mumbai',
+    expiryNote: 'Reserve quickly; pickup window closes at 7 PM.',
+    donor: { name: 'Green Fork Cafe', role: 'Donor', location: 'Andheri', rating: 4.6 },
+    reservedBy: 'Hope Shelter',
+    coordinates: { lat: 19.119, lng: 72.8464 },
+  },
+  {
+    id: 'list_103',
+    foodType: 'Fruit baskets',
+    quantity: 20,
+    unit: 'baskets',
+    distanceKm: 4.8,
+    expiryAt: '2026-05-01T21:45:00.000Z',
+    createdAt: '2026-05-01T18:05:00.000Z',
+    status: 'Available',
+    image: 'https://images.unsplash.com/photo-1488459716781-31db52582fe9?auto=format&fit=crop&w=900&q=80',
+    pickupAddress: 'Lower Parel, Mumbai',
+    expiryNote: 'Best before dinner service.',
+    donor: { name: 'City Grocers', role: 'Donor', location: 'Lower Parel', rating: 4.9 },
+    coordinates: { lat: 19.0139, lng: 72.8258 },
+  },
+  {
+    id: 'list_104',
+    foodType: 'Event meal trays',
+    quantity: 72,
+    unit: 'trays',
+    distanceKm: 5.3,
+    expiryAt: '2026-05-01T22:00:00.000Z',
+    createdAt: '2026-05-01T18:20:00.000Z',
+    status: 'Available',
+    image: 'https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=900&q=80',
+    pickupAddress: 'Juhu, Mumbai',
+    expiryNote: 'Transporter needed for evening route.',
+    donor: { name: 'Seaside Events', role: 'Donor', location: 'Juhu', rating: 4.7 },
+    coordinates: { lat: 19.0883, lng: 72.8265 },
+  },
+]
+
+export const mockReservations: Reservation[] = [
+  {
+    id: 'res_1',
+    listingId: 'list_102',
+    receiverName: 'Hope Shelter',
+    donorName: 'Green Fork Cafe',
+    scheduledFor: '2026-05-01T18:45:00.000Z',
+    status: 'Confirmed',
+  },
+]
+
+export const mockPickups: PickupAssignment[] = [
+  {
+    id: 'pick_1',
+    listingId: 'list_104',
+    routeInfo: 'Pickup at Juhu, deliver to CareWorks Shelter',
+    status: 'Assigned',
+    pickupAddress: 'Juhu, Mumbai',
+    donorName: 'Seaside Events',
+    receiverName: 'CareWorks Shelter',
+    scheduledFor: '2026-05-01T19:30:00.000Z',
+  },
+  {
+    id: 'pick_2',
+    listingId: 'list_101',
+    routeInfo: 'Pickup at Phoenix Marketcity, deliver to Hope Shelter',
+    status: 'Picked Up',
+    pickupAddress: 'Phoenix Marketcity, Mumbai',
+    donorName: 'Urban Bowl',
+    receiverName: 'Hope Shelter',
+    scheduledFor: '2026-05-01T18:10:00.000Z',
+  },
+]
+
+export const mockNotifications: NotificationItem[] = [
+  {
+    id: 'note_1',
+    type: 'nearby_listing',
+    title: 'New listing nearby',
+    message: 'A fruit basket donation is available 4.8 km away.',
+    createdAt: '2026-05-01T18:12:00.000Z',
+    read: false,
+  },
+  {
+    id: 'note_2',
+    type: 'reservation_confirmed',
+    title: 'Reservation confirmed',
+    message: 'Green Fork Cafe accepted your reservation.',
+    createdAt: '2026-05-01T18:02:00.000Z',
+    read: false,
+  },
+  {
+    id: 'note_3',
+    type: 'delivery_update',
+    title: 'Delivery update',
+    message: 'Pickup status changed to Picked Up for route #104.',
+    createdAt: '2026-05-01T17:58:00.000Z',
+    read: true,
+  },
+]
+
+export const mockReports: ReportItem[] = [
+  {
+    id: 'rep_1',
+    subject: 'Incomplete donor profile',
+    category: 'User',
+    reason: 'Verification documents missing.',
+    createdAt: '2026-05-01T16:30:00.000Z',
+    status: 'Open',
+  },
+  {
+    id: 'rep_2',
+    subject: 'Duplicate listing',
+    category: 'Listing',
+    reason: 'Same food posted twice within 10 minutes.',
+    createdAt: '2026-05-01T15:05:00.000Z',
+    status: 'Resolved',
+  },
+  {
+    id: 'rep_3',
+    subject: 'Delayed pickup',
+    category: 'Pickup',
+    reason: 'Transporter delayed by traffic.',
+    createdAt: '2026-05-01T14:40:00.000Z',
+    status: 'Open',
+  },
+]
