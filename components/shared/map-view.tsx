@@ -6,6 +6,8 @@ import L from 'leaflet'
 import { Button } from '@/components/ui/button'
 import type { Listing } from '@/types'
 
+import { calculateDistance } from '@/lib/utils'
+
 const defaultCenter: [number, number] = [19.076, 72.8777]
 
 function RecenterMap({ center }: { center: [number, number] }) {
@@ -67,24 +69,33 @@ export function MapView({
         <Marker position={userLocation}>
           <Popup>You are here</Popup>
         </Marker>
-        {listings.map((listing) => (
-          <Marker key={listing.id} position={[listing.coordinates.lat, listing.coordinates.lng]} icon={markerIcon}>
-            <Popup>
-              <div className="space-y-3 text-sm">
-                <div>
-                  <p className="font-semibold text-slate-900">{listing.foodType}</p>
-                  <p className="text-slate-500">
-                    {listing.quantity} {listing.unit} • {listing.distanceKm.toFixed(1)} km away
-                  </p>
+        {listings.map((listing) => {
+          const distance = calculateDistance(
+            userLocation[0],
+            userLocation[1],
+            listing.coordinates.lat,
+            listing.coordinates.lng,
+          )
+
+          return (
+            <Marker key={listing.id} position={[listing.coordinates.lat, listing.coordinates.lng]} icon={markerIcon}>
+              <Popup>
+                <div className="space-y-3 text-sm">
+                  <div>
+                    <p className="font-semibold text-slate-900">{listing.foodType}</p>
+                    <p className="text-slate-500">
+                      {listing.quantity} {listing.unit} • {distance.toFixed(1)} km away
+                    </p>
+                  </div>
+                  <p className="text-slate-600">{listing.pickupAddress}</p>
+                  <Button size="sm" className="w-full" onClick={() => onReserve?.(listing)}>
+                    Reserve
+                  </Button>
                 </div>
-                <p className="text-slate-600">{listing.pickupAddress}</p>
-                <Button size="sm" className="w-full" onClick={() => onReserve?.(listing)}>
-                  Reserve
-                </Button>
-              </div>
-            </Popup>
-          </Marker>
-        ))}
+              </Popup>
+            </Marker>
+          )
+        })}
       </MapContainer>
     </div>
   )

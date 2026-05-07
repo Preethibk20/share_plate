@@ -1,7 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -17,7 +17,16 @@ export default function ReceiverDashboardPage() {
   const router = useRouter()
   const [radius, setRadius] = useState(8)
   const [view, setView] = useState<'map' | 'list'>('map')
-  const { data: listings = [] } = useNearbyListings(radius)
+  const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null)
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => setUserCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+      () => setUserCoords({ lat: 19.076, lng: 72.8777 }),
+    )
+  }, [])
+
+  const { data: listings = [] } = useNearbyListings(userCoords, radius)
 
   const listingCount = useMemo(() => listings.length, [listings])
 
